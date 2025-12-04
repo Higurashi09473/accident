@@ -1,0 +1,30 @@
+services:
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    restart: unless-stopped
+    ports:
+      - "8978:8978"
+    volumes:
+      - ./cloudbeaver-data:/opt/cloudbeaver/workspace
+    depends_on:
+      - postgres
+
+
+  postgres:
+    image: postgres:latest
+    container_name: postgresql
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql
+  
+volumes:
+  cloudbeaver:
+  pgdata:
+
+
+
