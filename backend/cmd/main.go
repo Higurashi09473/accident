@@ -91,6 +91,14 @@ func main() {
 		render.JSON(w, r, arr)
 	})
 
+	r.Get("/count/source", func(w http.ResponseWriter, r *http.Request) {
+		arr, err := postgresql.FetchSourceCount(db)
+		if err != nil {
+			log.Println(err)
+		}
+		render.JSON(w, r, arr)
+	})
+
 	
 
 	http.ListenAndServe(":3333", r)

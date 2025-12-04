@@ -135,3 +135,33 @@ func FetchTypeCount(db *sql.DB) ([]storage.ResponseMost, error) {
 	}
 	return arr, nil
 }
+
+
+func FetchSourceCount(db *sql.DB) ([]storage.ResponseMost, error) {
+	sqlStatement := `SELECT 
+						source, 
+						COUNT(*)
+					FROM data
+					GROUP BY source
+					ORDER BY count DESC;   
+					`
+	
+	rows, err := db.Query(sqlStatement)
+	if err != nil {
+		return nil, fmt.Errorf("query: %w", err)
+	}
+
+	var arr []storage.ResponseMost
+
+
+	for rows.Next() {
+		var item storage.ResponseMost 	
+
+		if err := rows.Scan(&item.Item, &item.Count); err != nil {
+			return nil, err
+		}
+
+		arr = append(arr, item)
+	}
+	return arr, nil
+}
