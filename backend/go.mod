@@ -21,6 +21,7 @@ require (
 )
 
 require (
+	github.com/go-chi/cors v1.2.2
 	github.com/go-chi/render v1.0.3
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/mattn/go-colorable v0.1.13 // indirect

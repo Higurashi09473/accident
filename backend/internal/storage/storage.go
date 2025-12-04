@@ -24,7 +24,12 @@ type Geometry struct {
 type Properties struct {
 	Type      string `json:"type"`
 	District  string `json:"district"`
-	Severity  int64 `json:"severity"`
+	Severity  int64  `json:"severity"`
 	Timestamp string `json:"timestamp"`
 	Source    string `json:"source"`
+}
+
+type ResponseMost struct {
+	Item string `json:"district"`
+	Count   int64  `json:"amount"`
 }

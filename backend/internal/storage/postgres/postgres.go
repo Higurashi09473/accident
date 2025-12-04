@@ -46,8 +46,6 @@ func AddData(db *sql.DB, arr []storage.Data) (error) {
 func FetchData(db *sql.DB) ([]storage.GeoPoint, error){
 	sqlStatement := `SELECT type, coordinates, district, severity, timestamp, source
 					FROM data;`
-	// sqlStatement := `SELECT type, coordinates
-	//  				FROM data;`
 	
 	rows, err := db.Query(sqlStatement)
 	if err != nil {
@@ -65,14 +63,75 @@ func FetchData(db *sql.DB) ([]storage.GeoPoint, error){
 			return nil, err
 		}
 
-		if severity == "низкая" {
+		switch severity {
+		case "низкая":
 			point.Properties.Severity = 1
-		} else if severity == "средняя"{
+		case "средняя":
 			point.Properties.Severity = 2
-		}else if severity == "высокая"{
+		case "высокая":
 			point.Properties.Severity = 3
 		}
 		arr = append(arr, point)
+	}
+	return arr, nil
+}
+
+
+func FetchDistrictCount(db *sql.DB) ([]storage.ResponseMost, error) {
+	sqlStatement := `SELECT 
+						district, 
+						COUNT(*)
+					FROM data
+					GROUP BY district
+					ORDER BY count DESC;   
+					`
+	
+	rows, err := db.Query(sqlStatement)
+	if err != nil {
+		return nil, fmt.Errorf("query: %w", err)
+	}
+
+	var arr []storage.ResponseMost
+
+
+	for rows.Next() {
+		var item storage.ResponseMost 	
+
+		if err := rows.Scan(&item.Item, &item.Count); err != nil {
+			return nil, err
+		}
+
+		arr = append(arr, item)
+	}
+	return arr, nil
+}
+
+
+func FetchTypeCount(db *sql.DB) ([]storage.ResponseMost, error) {
+	sqlStatement := `SELECT 
+						type, 
+						COUNT(*)
+					FROM data
+					GROUP BY type
+					ORDER BY count DESC;   
+					`
+	
+	rows, err := db.Query(sqlStatement)
+	if err != nil {
+		return nil, fmt.Errorf("query: %w", err)
+	}
+
+	var arr []storage.ResponseMost
+
+
+	for rows.Next() {
+		var item storage.ResponseMost 	
+
+		if err := rows.Scan(&item.Item, &item.Count); err != nil {
+			return nil, err
+		}
+
+		arr = append(arr, item)
 	}
 	return arr, nil
 }

@@ -47,7 +47,7 @@ func main() {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-	
+
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173", "http://localhost:*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -68,6 +68,23 @@ func main() {
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		arr, err := postgresql.FetchData(db)
+		if err != nil {
+			log.Println(err)
+		}
+		render.JSON(w, r, arr)
+	})
+
+	
+	r.Get("/count/district", func(w http.ResponseWriter, r *http.Request) {
+		arr, err := postgresql.FetchDistrictCount(db)
+		if err != nil {
+			log.Println(err)
+		}
+		render.JSON(w, r, arr)
+	})
+
+	r.Get("/count/type", func(w http.ResponseWriter, r *http.Request) {
+		arr, err := postgresql.FetchTypeCount(db)
 		if err != nil {
 			log.Println(err)
 		}
