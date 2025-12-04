@@ -10,7 +10,7 @@ export default function App() {
   const [points, setPoints] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3333")
+    fetch("http://higu.su")
       .then(res => res.json())
       .then(
         (result) => {

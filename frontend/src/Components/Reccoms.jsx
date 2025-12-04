@@ -9,7 +9,7 @@ export default function Reccoms() {
     const [source, setSource] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:3333/count/type")
+        fetch("http://higu.su/count/type")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -23,7 +23,7 @@ export default function Reccoms() {
             )
     }, [])
     useEffect(() => {
-        fetch("http://localhost:3333/count/district")
+        fetch("http://higu.su/count/district")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -37,7 +37,7 @@ export default function Reccoms() {
             )
     }, [])
     useEffect(() => {
-        fetch("http://localhost:3333/count/source")
+        fetch("http://higu.su/count/source")
             .then(res => res.json())
             .then(
                 (result) => {
