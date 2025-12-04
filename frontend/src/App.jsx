@@ -1,13 +1,43 @@
 import React from 'react';
 import Map from "./Components/Map"
+import { useState, useEffect } from "react";
+import Reccoms from './Components/Reccoms';
 
 
 export default function App() {
-  return (
-    <div className="App">
-      <Map />
-    </div>
-  )
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [points, setPoints] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3333")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true);
+          setPoints(result);
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      )
+  }, [])
+
+  if (error) {
+    return <div>Ошибка: {error.message}</div>;
+  } else if (!isLoaded) {
+    return <div>Загрузка...</div>;
+  } else {
+    return (
+
+      <div className="App">
+        <Map points={points} />
+        <Reccoms></Reccoms>
+      </div>
+    )
+  }
 }
+
 
 
